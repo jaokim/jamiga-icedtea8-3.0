@@ -1,0 +1,40 @@
+diff -r a5c3d9643077 src/share/bin/java.c
+--- openjdk/jdk/src/share/bin/java.c	Tue Feb 10 16:24:28 2015 +0000
++++ openjdk/jdk/src/share/bin/java.c	Tue May 12 16:53:03 2015 +0100
+@@ -168,6 +168,8 @@
+ static jlong maxHeapSize        = 0;  /* max heap size */
+ static jlong initialHeapSize    = 0;  /* inital heap size */
+ 
++#define JNI_VERSION_CACAO 0xcaca0000
++
+ /*
+  * Entry point.
+  */
+@@ -1996,6 +1998,8 @@
+ 
+     { /* Create a new thread to create JVM and invoke main method */
+       JavaMainArgs args;
++      struct JDK1_1InitArgs cacao_args;
++      int jvm_init_rv;
+       int rslt;
+ 
+       args.argc = argc;
+@@ -2004,7 +2008,17 @@
+       args.what = what;
+       args.ifn = *ifn;
+ 
+-      rslt = ContinueInNewThread0(JavaMain, threadStackSize, (void*)&args);
++      memset((void*)&cacao_args, 0, sizeof(cacao_args));
++      cacao_args.version = JNI_VERSION_CACAO;
++
++      jvm_init_rv = ifn->GetDefaultJavaVMInitArgs(&cacao_args);
++      JLI_TraceLauncher("using cacao as VM: %s\n", (jvm_init_rv == 0) ? "yes" : "no");
++
++      if (jvm_init_rv == 0)
++          return JavaMain((void*)&args);
++      else
++          return ContinueInNewThread0(JavaMain, threadStackSize, (void*)&args);
++
+       /* If the caller has deemed there is an error we
+        * simply return that, otherwise we return the value of
+        * the callee

@@ -1,0 +1,19 @@
+#!/bin/sh
+
+echo "Further liberating OpenJDK..."
+
+# PRx denotes bug x in the IcedTea bug database (http://icedtea.classpath.org/bugzilla/show_bug.cgi?id=x)
+# Sx denotes bug x in the Sun/Oracle bug database (https://bugs.openjdk.java.net/browse/JDK-X)
+
+echo "Removing support for proprietary SNMP plug"
+rm -rvf openjdk/jdk/src/share/classes/sun/management/snmp
+rm -rvf openjdk/jdk/src/share/classes/com/sun/jmx/snmp
+rm -rvf openjdk/jdk/test/com/sun/jmx/snmp
+
+echo "Removing EC source code we don't build"
+rm -rvf openjdk/jdk/src/share/native/sun/security/ec/impl
+
+if test "x@ENABLE_NON_NSS_CURVES@" = "xno"; then
+  echo "Syncing EC list with NSS"
+  patch -Np0 < @abs_top_srcdir@/patches/pr2126.patch
+fi

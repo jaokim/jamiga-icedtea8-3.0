@@ -1,0 +1,37 @@
+Patches
+=======
+
+PRx denotes bug x in the IcedTea bug database (http://icedtea.classpath.org/bugzilla/show_bug.cgi?id=x)
+Sx denotes bug x in the Sun/Oracle bug database (https://bugs.openjdk.java.net/browse/JDK-X)
+
+The fsg.sh script is also run to delete certain files with dubious licensing and/or only occuring
+in binary format.
+
+The following patches are currently applied before the building of OpenJDK 8 by IcedTea:
+
+* disable-intree-ec.patch: Turn off the SunEC provider in java.security.
+* memory-limits.patch: Increase default memory limits.
+* nss-config.patch: Add and enable the PKCS11 provider in java.security
+* nss-not-enabled-config.patch: Add but disable the PKCS11 provider in java.security.
+* override-redirect-metacity.patch: Enable override redirect for Metacity window manager.
+* pr2126.patch: Applied as part of fsg.sh to remove elliptic curves unsupported by NSS.
+* rh1022017.patch: Only announce supported elliptic curves over TLS connections.
+
+The following patches are only applied when building with the CACAO virtual machine:
+
+* cacao/ignore-tests.patch: Ignore tests known to fail on CACAO.
+* cacao/launcher.patch: For the 'java' command, create new thread depending on the current VM.
+* cacao/pr2032.patch: Implement JVM_FindClassFromCaller.
+* cacao/pr2349.patch: Allow CACAO to recognise OpenJDK 8.
+
+The following patches are only applied when building with the JamVM virtual machine:
+
+* jamvm/find_class_from_caller.patch: Implement JVM_FindClassFromCaller.
+
+The following patches are only applied when building the PulseAudio sound provider:
+
+* pulse-soundproperties.patch: Add disabled settings for the PulseAudio provider to sound.properties
+
+The following patches are only applied when SystemTap is found:
+
+* systemtap-gcc-4.5.patch: Enable building SystemTap support on GCC >= 4.5 (PR476)
