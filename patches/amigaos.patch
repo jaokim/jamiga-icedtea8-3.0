@@ -1,0 +1,16 @@
+Index: openjdk/common/autoconf/platform.m4
+===================================================================
+--- openjdk/common/autoconf/platform.m4	2016-04-01 05:32:19.000000000 +0200
++++ openjdk/common/autoconf/platform.m4	2016-05-19 21:55:08.224382165 +0200
+@@ -143,6 +143,11 @@
+       VAR_OS_API=posix
+       VAR_OS_ENV=aix
+       ;;
++    *amigaos*)
++      VAR_OS=amigaos
++      VAR_OS_API=amigaos
++      VAR_OS_ENV=amigaos
++      ;;
+     *)
+       AC_MSG_ERROR([unsupported operating system $1])
+       ;;
